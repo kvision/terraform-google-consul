@@ -28,6 +28,10 @@ module "consul_servers" {
 
   gcp_project_id      = var.gcp_project_id
   gcp_region          = var.gcp_region
+  network_name        = var.network_name
+  subnetwork_name     = var.subnetwork_name
+  network_project_id  = var.gcp_project_id
+  service_account_email = var.service_account_email
   cluster_name        = var.consul_server_cluster_name
   cluster_description = "Consul Server cluster"
   cluster_size        = var.consul_server_cluster_size
@@ -62,7 +66,7 @@ module "consul_servers" {
 
   # WARNING! This makes the Consul cluster accessible from the public Internet, which is convenient for testing, but
   # NOT for production usage. In production, set this to false.
-  assign_public_ip_addresses = true
+  assign_public_ip_addresses = false
 
   # This update strategy will performing a rolling update of the Consul cluster server nodes. We wait 5 minutes for
   # the newly created server nodes to become available to ensure they have enough time to join the cluster and
@@ -102,6 +106,10 @@ module "consul_clients" {
 
   gcp_project_id      = var.gcp_project_id
   gcp_region          = var.gcp_region
+  network_name        = var.network_name
+  subnetwork_name     = var.subnetwork_name
+  network_project_id  = var.gcp_project_id
+  service_account_email = var.service_account_email
   cluster_name        = var.consul_client_cluster_name
   cluster_description = "Consul Clients cluster"
   cluster_size        = var.consul_client_cluster_size
@@ -119,7 +127,7 @@ module "consul_clients" {
   root_volume_disk_type    = "pd-standard"
   root_volume_disk_size_gb = "20"
 
-  assign_public_ip_addresses = true
+  assign_public_ip_addresses = false
 
   source_image     = var.consul_client_source_image
   image_project_id = var.image_project_id

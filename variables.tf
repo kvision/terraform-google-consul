@@ -13,6 +13,22 @@ variable "gcp_region" {
   type        = string
 }
 
+variable "network_name" {
+  description = "The network in which all GCP resources will be launched."
+  type        = string
+}
+
+variable "subnetwork_name" {
+  description = "The subnetwork in which all GCP resources will be launched."
+  type        = string
+}
+
+variable "service_account_email" {
+  description = "The email of the service account for the instance template. If none is provided the google cloud provider project service account is used."
+  type        = string
+  default     = null
+}
+
 variable "consul_server_cluster_name" {
   description = "The name of the Consul Server cluster. All resources will be namespaced by this value. E.g. consul-server-prod"
   type        = string

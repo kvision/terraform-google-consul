@@ -150,7 +150,7 @@ function get_consul_server_property_values {
   local -r property_name="$4"
   local instances
 
-  log_info "Fetching external IP addresses for Consul Server Compute Instances with tag \"$cluster_tag_name\""
+  log_info "Fetching internal IP addresses for Consul Server Compute Instances with tag \"$cluster_tag_name\""
 
   instances=$(gcloud compute instances list \
     --project "$gcp_project"\
@@ -162,7 +162,7 @@ function get_consul_server_property_values {
 }
 
 function get_all_consul_server_ips {
-  get_all_consul_server_property_values "EXTERNAL_IP"
+  get_all_consul_server_property_values "INTERNAL_IP"
 }
 
 function print_instructions {
