@@ -98,48 +98,48 @@ data "template_file" "startup_script_server" {
 # but feel free to deploy those clients however you choose (e.g. a single Compute Instance, a Docker cluster, etc).
 # ---------------------------------------------------------------------------------------------------------------------
 
-module "consul_clients" {
-  # When using these modules in your own templates, you will need to use a Git URL with a ref attribute that pins you
-  # to a specific version of the modules, such as the following example:
-  # source = "git::git@github.com:gruntwork-io/consul-gcp-module.git//modules/consul-cluster?ref=v0.0.1"
-  source = "./modules/consul-cluster"
+# module "consul_clients" {
+#   # When using these modules in your own templates, you will need to use a Git URL with a ref attribute that pins you
+#   # to a specific version of the modules, such as the following example:
+#   # source = "git::git@github.com:gruntwork-io/consul-gcp-module.git//modules/consul-cluster?ref=v0.0.1"
+#   source = "./modules/consul-cluster"
 
-  gcp_project_id      = var.gcp_project_id
-  gcp_region          = var.gcp_region
-  network_name        = var.network_name
-  subnetwork_name     = var.subnetwork_name
-  network_project_id  = var.gcp_project_id
-  service_account_email = var.service_account_email
-  cluster_name        = var.consul_client_cluster_name
-  cluster_description = "Consul Clients cluster"
-  cluster_size        = var.consul_client_cluster_size
-  cluster_tag_name    = var.consul_client_cluster_tag_name
-  startup_script      = data.template_file.startup_script_client.rendered
-  shutdown_script     = file("${path.module}/examples/root-example/shutdown-script.sh")
+#   gcp_project_id      = var.gcp_project_id
+#   gcp_region          = var.gcp_region
+#   network_name        = var.network_name
+#   subnetwork_name     = var.subnetwork_name
+#   network_project_id  = var.gcp_project_id
+#   service_account_email = var.service_account_email
+#   cluster_name        = var.consul_client_cluster_name
+#   cluster_description = "Consul Clients cluster"
+#   cluster_size        = var.consul_client_cluster_size
+#   cluster_tag_name    = var.consul_client_cluster_tag_name
+#   startup_script      = data.template_file.startup_script_client.rendered
+#   shutdown_script     = file("${path.module}/examples/root-example/shutdown-script.sh")
 
-  allowed_inbound_tags_http_api        = [var.consul_client_cluster_tag_name]
-  allowed_inbound_cidr_blocks_http_api = var.consul_client_allowed_inbound_cidr_blocks_http_api
+#   allowed_inbound_tags_http_api        = [var.consul_client_cluster_tag_name]
+#   allowed_inbound_cidr_blocks_http_api = var.consul_client_allowed_inbound_cidr_blocks_http_api
 
-  allowed_inbound_tags_dns        = [var.consul_client_cluster_tag_name]
-  allowed_inbound_cidr_blocks_dns = var.consul_client_allowed_inbound_cidr_blocks_dns
+#   allowed_inbound_tags_dns        = [var.consul_client_cluster_tag_name]
+#   allowed_inbound_cidr_blocks_dns = var.consul_client_allowed_inbound_cidr_blocks_dns
 
-  machine_type             = "g1-small"
-  root_volume_disk_type    = "pd-standard"
-  root_volume_disk_size_gb = "20"
+#   machine_type             = "g1-small"
+#   root_volume_disk_type    = "pd-standard"
+#   root_volume_disk_size_gb = "20"
 
-  assign_public_ip_addresses = false
+#   assign_public_ip_addresses = false
 
-  source_image     = var.consul_client_source_image
-  image_project_id = var.image_project_id
+#   source_image     = var.consul_client_source_image
+#   image_project_id = var.image_project_id
 
-  # Our Consul Clients are completely stateless, so we are free to destroy and re-create them as needed.
-  instance_group_update_policy_type                  = "PROACTIVE"
-  instance_group_update_policy_redistribution_type   = "PROACTIVE"
-  instance_group_update_policy_minimal_action        = "REPLACE"
-  instance_group_update_policy_max_surge_fixed       = 1 * length(data.google_compute_zones.available.names)
-  instance_group_update_policy_max_unavailable_fixed = 1 * length(data.google_compute_zones.available.names)
-  instance_group_update_policy_min_ready_sec         = 50
-}
+#   # Our Consul Clients are completely stateless, so we are free to destroy and re-create them as needed.
+#   instance_group_update_policy_type                  = "PROACTIVE"
+#   instance_group_update_policy_redistribution_type   = "PROACTIVE"
+#   instance_group_update_policy_minimal_action        = "REPLACE"
+#   instance_group_update_policy_max_surge_fixed       = 1 * length(data.google_compute_zones.available.names)
+#   instance_group_update_policy_max_unavailable_fixed = 1 * length(data.google_compute_zones.available.names)
+#   instance_group_update_policy_min_ready_sec         = 50
+# }
 
 # Render the Startup Script that will run on each Consul Server Instance on boot.
 # This script will configure and start Consul.
